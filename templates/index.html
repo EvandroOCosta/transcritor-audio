@@ -18,9 +18,7 @@
   --border: rgba(0,212,255,0.12);
   --card: rgba(13,20,32,0.8);
 }
-
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
 body {
   font-family: 'DM Sans', sans-serif;
   background: var(--bg);
@@ -29,6 +27,409 @@ body {
   display: flex;
   flex-direction: column;
 }
-
 .grid-bg {
-  position:
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  z-index: 0;
+  pointer-events: none;
+}
+header {
+  text-align: center;
+  padding: 3rem 1rem 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 1rem;
+}
+.label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--cyan);
+}
+h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+h1 span { color: var(--cyan); }
+.subtitle {
+  color: var(--text2);
+  margin-top: 0.75rem;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem 3rem;
+  position: relative;
+  z-index: 1;
+  gap: 2rem;
+  max-width: 720px;
+  margin: 0 auto;
+  width: 100%;
+}
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+  width: 100%;
+  backdrop-filter: blur(10px);
+}
+.upload-area {
+  border: 2px dashed var(--border);
+  border-radius: 10px;
+  padding: 2.5rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+.upload-area:hover,
+.upload-area.drag-over {
+  border-color: var(--cyan);
+  background: rgba(0,212,255,0.04);
+}
+.upload-area input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+.upload-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+.upload-area h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  margin-bottom: 0.4rem;
+}
+.upload-area p { color: var(--text2); font-size: 0.875rem; }
+.arquivo-selecionado {
+  margin-top: 1rem;
+  color: var(--cyan);
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: none;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: var(--cyan);
+  color: var(--bg);
+  border: none;
+  padding: 0.9rem 2rem;
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 1.5rem;
+  transition: all 0.2s;
+}
+.btn:hover:not(:disabled) {
+  background: #fff;
+  box-shadow: 0 8px 30px rgba(0,212,255,0.25);
+  transform: translateY(-1px);
+}
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.progresso-container {
+  display: none;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+.progresso-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: var(--text2);
+}
+.progresso-label span:last-child { color: var(--cyan); font-weight: 600; }
+.progresso-barra-bg {
+  width: 100%;
+  height: 8px;
+  background: var(--bg2);
+  border-radius: 99px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.progresso-barra {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--cyan2), var(--cyan));
+  border-radius: 99px;
+  transition: width 0.4s ease;
+  box-shadow: 0 0 10px rgba(0,212,255,0.4);
+}
+.progresso-status {
+  font-size: 0.825rem;
+  color: var(--text2);
+  text-align: center;
+}
+.resultado-card { display: none; }
+.resultado-card h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: var(--cyan);
+}
+textarea {
+  width: 100%;
+  min-height: 220px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  padding: 1rem;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+}
+textarea:focus { border-color: var(--cyan); }
+.botoes-resultado {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.btn-outline {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: transparent;
+  color: var(--cyan);
+  border: 1px solid var(--cyan);
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-outline:hover { background: rgba(0,212,255,0.08); }
+footer {
+  text-align: center;
+  padding: 1.5rem;
+  border-top: 1px solid var(--border);
+  color: var(--text2);
+  font-size: 0.85rem;
+  position: relative;
+  z-index: 1;
+}
+footer a {
+  color: var(--cyan);
+  text-decoration: none;
+  font-weight: 500;
+}
+footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<header>
+  <div class="label">Ferramenta gratuita</div>
+  <h1>Transcritor de <span>Áudio</span></h1>
+  <p class="subtitle">Envie um arquivo de áudio ou vídeo e receba a transcrição em texto,<br>pronta para copiar ou baixar.</p>
+</header>
+<main>
+  <div class="card">
+    <div class="upload-area" id="uploadArea">
+      <input type="file" id="arquivoInput" accept=".mp3,.mp4,.wav,.m4a,.ogg,.aac,.flac,.mov,.mkv,.avi">
+      <div class="upload-icon">🎙️</div>
+      <h3>Arraste o arquivo aqui</h3>
+      <p>ou clique para selecionar · MP3, MP4, WAV, M4A e outros</p>
+    </div>
+    <div class="arquivo-selecionado" id="arquivoNome"></div>
+    <button class="btn" id="btnTranscrever" disabled>
+      🎯 Transcrever áudio
+    </button>
+    <div class="progresso-container" id="progressoContainer">
+      <div class="progresso-label">
+        <span id="progressoTexto">Iniciando...</span>
+        <span id="progressoPct">0%</span>
+      </div>
+      <div class="progresso-barra-bg">
+        <div class="progresso-barra" id="progressoBarra"></div>
+      </div>
+      <div class="progresso-status" id="progressoStatus">Preparando o áudio...</div>
+    </div>
+  </div>
+  <div class="card resultado-card" id="resultadoCard">
+    <h2>📄 Transcrição</h2>
+    <textarea id="textoTranscrito" readonly></textarea>
+    <div class="botoes-resultado">
+      <button class="btn-outline" onclick="copiarTexto()">📋 Copiar texto</button>
+      <button class="btn-outline" onclick="baixarTexto()">⬇️ Baixar .txt</button>
+    </div>
+  </div>
+</main>
+<footer>
+  Desenvolvido por <a href="https://www.evandrocostabi.com.br" target="_blank">evandrocostabi.com.br</a>
+  &nbsp;·&nbsp; Powered by OpenAI Whisper
+</footer>
+<script>
+const input = document.getElementById("arquivoInput");
+const btn = document.getElementById("btnTranscrever");
+const resultadoCard = document.getElementById("resultadoCard");
+const textoTranscrito = document.getElementById("textoTranscrito");
+const arquivoNome = document.getElementById("arquivoNome");
+const uploadArea = document.getElementById("uploadArea");
+const progressoContainer = document.getElementById("progressoContainer");
+const progressoBarra = document.getElementById("progressoBarra");
+const progressoPct = document.getElementById("progressoPct");
+const progressoTexto = document.getElementById("progressoTexto");
+const progressoStatus = document.getElementById("progressoStatus");
+
+let progressoInterval = null;
+
+input.addEventListener("change", () => {
+  if (input.files.length > 0) {
+    arquivoNome.textContent = "✅ " + input.files[0].name;
+    arquivoNome.style.display = "block";
+    btn.disabled = false;
+  }
+});
+
+uploadArea.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  uploadArea.classList.add("drag-over");
+});
+
+uploadArea.addEventListener("dragleave", () => {
+  uploadArea.classList.remove("drag-over");
+});
+
+uploadArea.addEventListener("drop", (e) => {
+  e.preventDefault();
+  uploadArea.classList.remove("drag-over");
+  if (e.dataTransfer.files.length > 0) {
+    input.files = e.dataTransfer.files;
+    arquivoNome.textContent = "✅ " + e.dataTransfer.files[0].name;
+    arquivoNome.style.display = "block";
+    btn.disabled = false;
+  }
+});
+
+function iniciarProgresso() {
+  let pct = 0;
+  const mensagens = [
+    "Dividindo o áudio em partes...",
+    "Transcrevendo o áudio...",
+    "Processando o texto...",
+    "Quase pronto, aguarde...",
+    "Finalizando a transcrição..."
+  ];
+  let msgIdx = 0;
+
+  progressoContainer.style.display = "flex";
+  progressoBarra.style.width = "0%";
+  progressoPct.textContent = "0%";
+  progressoTexto.textContent = "Iniciando...";
+  progressoStatus.textContent = mensagens[0];
+
+  progressoInterval = setInterval(() => {
+    if (pct < 30) pct += 1.5;
+    else if (pct < 60) pct += 0.8;
+    else if (pct < 85) pct += 0.3;
+    else if (pct < 92) pct += 0.1;
+
+    progressoBarra.style.width = pct + "%";
+    progressoPct.textContent = Math.floor(pct) + "%";
+
+    const novoIdx = Math.floor((pct / 95) * mensagens.length);
+    if (novoIdx !== msgIdx && novoIdx < mensagens.length) {
+      msgIdx = novoIdx;
+      progressoStatus.textContent = mensagens[msgIdx];
+    }
+  }, 400);
+}
+
+function finalizarProgresso() {
+  clearInterval(progressoInterval);
+  progressoBarra.style.width = "100%";
+  progressoPct.textContent = "100%";
+  progressoTexto.textContent = "Concluído!";
+  progressoStatus.textContent = "✅ Transcrição finalizada!";
+}
+
+btn.addEventListener("click", async () => {
+  const arquivo = input.files[0];
+  if (!arquivo) return;
+
+  btn.disabled = true;
+  resultadoCard.style.display = "none";
+  iniciarProgresso();
+
+  const formData = new FormData();
+  formData.append("audio", arquivo);
+
+  try {
+    const resposta = await fetch("/transcrever", {
+      method: "POST",
+      body: formData
+    });
+
+    const dados = await resposta.json();
+    finalizarProgresso();
+
+    if (dados.erro) {
+      alert("Erro: " + dados.erro);
+    } else {
+      setTimeout(() => {
+        textoTranscrito.value = dados.texto;
+        resultadoCard.style.display = "block";
+        resultadoCard.scrollIntoView({ behavior: "smooth" });
+      }, 800);
+    }
+  } catch (e) {
+    clearInterval(progressoInterval);
+    progressoStatus.textContent = "❌ Erro ao conectar com o servidor.";
+    alert("Erro ao conectar com o servidor. Tente novamente.");
+    btn.disabled = false;
+  }
+});
+
+function copiarTexto() {
+  navigator.clipboard.writeText(textoTranscrito.value);
+  alert("Texto copiado!");
+}
+
+function baixarTexto() {
+  const blob = new Blob([textoTranscrito.value], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "transcricao.txt";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
