@@ -33,7 +33,6 @@ def transcrever():
     try:
         import subprocess
 
-        # Descobrir duração do áudio em segundos
         resultado_duracao = subprocess.run(
             ["ffprobe", "-v", "error", "-show_entries", "format=duration",
              "-of", "default=noprint_wrappers=1:nokey=1", caminho],
@@ -41,7 +40,6 @@ def transcrever():
         )
         duracao = float(resultado_duracao.stdout.strip())
 
-        # Dividir em partes de 10 minutos (600 segundos)
         parte_segundos = 600
         num_partes = math.ceil(duracao / parte_segundos)
 
@@ -74,4 +72,5 @@ def transcrever():
         os.unlink(caminho)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
